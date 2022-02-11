@@ -27,23 +27,28 @@ class Playlist {
         Playlist.all.push(this)
     }
 
-    renderplaylist() {
-
+    renderPlaylist() {
         let list = document.getElementById("playlist_list")
+        //let newListItem = document.createElement("li")
 
-        `<li clss="playlist_frame">
-            <p>NAME:${self.name}</p>
-            <p>CURATOR:${self.curator}</p>
-            <p>DESCRIPTION:${self.description}</p>
-            <p>NAME:${self.name}</p>
-            <p>NAME:${self.name}</p>
+        let playlistContent = `<div class="playlist_frame">
+            <h4>${this.name}</h4>
+            <h5>CURATOR: ${this.curator}</h5>
+            <p>Genres: ${this.genres_string}</p>
+            <p>DESCRIPTION: ${this.description.substring(0,100)}</p>
+            <p>SONGS: ${this.songs}</p>
+            <p>FOLLOWERS: ${this.followers}</p>
             <br>
             <button>+</button>
             <button>DELETE</button>
             <button>EDIT</button>
-        </li>`
+        </div>`
+        
+        list.innerHTML += playlistContent
+        //list.appendChild(newListItem);
+        //debugger
     }
-
+    
 }
 
 Playlist.all = []
