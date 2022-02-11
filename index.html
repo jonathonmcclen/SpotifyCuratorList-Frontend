@@ -7,61 +7,46 @@
 
     <link rel="stylesheet" href="main.css">
     <script src="https://kit.fontawesome.com/4f43539e40.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="src/request.js"></script>
+    <script type="text/javascript" src="src/playlist.js"></script>
     <script type="text/javascript" src="index.js"></script>
    
 
-    <title>Feature Requests</title>
+    <title>Independent Artist Spotify Curators</title>
 </head>
 
 <body>
-    <div class="content">
-        <h1>Action Network Feature Requests</h1>
-    <div id="#filter-container">
-        <label for="select-category">Select Category:</label>
-        <select id="category-dropdown" name="select-category">
-            <option value="" disabled selected>Select Category</option>
-            <option value="0">View All Categories</option>
-            <option value="1">Letter Campaigns</option>
-            <option value="2">User Interface</option>
-            <option value="3">Petitions</option>
-            <option value="4">Emails</option>
-            <option value="5">Mobile Messages</option>
-            <option value="6">won't work</option>
-        </select>
+    <div id="top-bar">
+        <h1>Independent Artist</h1> 
+        <h2>Spotify Curators</h2>
+
+        <div id="nav">
+            <div>VIEW ALL</div>
+            <div>SEARCH:<input type="text" id="search_bar" name="search_bar"></div>
+            <p><a href="#">List</a>&nbsp;&nbsp;&nbsp;<a href="createPlaylist.html">Create</a></p>
+        </div>
+        
+    </div>
+    <div id="top-nav">
+        <div class="center">
+            <button onClick="prev25Playlists()">&#60;</button>
+            <button onClick="next25Playlists()">&#62;</button>            
+        </div>
+        
     </div>
 
-    <div id="form-container">
-        <form id="request-form">
-            <h2>Create New Feature Request</h2>
 
-            <label for="input-name">Name:</label><br>
-            <input id="input-name" name="name" type="text" value=""><br><br>
-
-            <label for"input-description">Description:</label><br>
-            <textarea id="input-description" name="description" rows="8" cols="80"></textarea><br><br>
-
-            <label for "category-name">Category:</label>
-            <select id="select-categories" name="categories">
-                <option value="" disabled selected>Select Category</option>
-                <option value="1">Letter Campaigns</option>
-                <option value="2">User Interface</option>
-                <option value="3">Petitions</option>
-                <option value="4">Emails</option>
-                <option value="5">Mobile Messages</option>
-                <option value="6">won't work</option>
-            </select>
-            <br>
-            <br>
-
-            <input id="create-button" type="submit" value="Create New Request">
-        </form>
-    </div>
     
-    <div id="requests-container">
+   
+    <div id="playlist_list">
 
 
     </div>
-</div>
+
+    <div id="bottom-nav">
+        <div class="center">
+            <button onClick="prev25Playlists(); scrollToTop();">&#60;</button>
+            <button onClick="next25Playlists(); scrollToTop();">&#62;</button>            
+        </div>
+    </div>
 </body>
 </html>
