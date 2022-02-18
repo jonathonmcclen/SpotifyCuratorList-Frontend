@@ -31,7 +31,7 @@ class Playlist {
         let list = document.getElementById("playlist_list")
         //let newListItem = document.createElement("li")
 
-        let playlistContent = `<div class="playlist_frame">
+        let playlistContent = `<div class="playlist_frame col-md-4">
             <h4>${this.name}</h4>
             <h5>CURATOR: ${this.curator}</h5>
             <p>Genres: ${this.genres_string}</p>
