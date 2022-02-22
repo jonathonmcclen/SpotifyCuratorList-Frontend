@@ -1,128 +1,189 @@
-<style type="text/css">
- a, a:hover, a:focus, a:active {
-     text-decoration: none;
-     color: inherit;
- }
+<style type="text/css">a, a:hover, a:focus, a:active {
+    text-decoration: none;
+    color: inherit;
+}
+
+.click{
+    cursor: pointer;
+}
+
+.inset-shadow {
+    padding: 15px;
+   -moz-box-shadow:    inset 0 0 10px #000000;
+   -webkit-box-shadow: inset 0 0 10px #000000;
+   box-shadow:         inset 0 0 10px #000000;
+}
 
 #side-bar{
-    background-color: dimgrey;
-    border-radius:50px;
-    color: #000000;
-    padding: 25px 15px;
+   background-color: dimgrey;
+   border-radius:50px;
+   color: #000000;
+   padding: 25px 15px;
 }
 
 #playlist-box {
-    background-color: dimgrey;
-    border-radius:50px;
-    padding: 25px 15px;
+    border-style: solid;
+    border-width: 1px;
+    border-color:gainsboro;
 }
 
 .social{
-    font-size: 50px;
+   font-size: 50px;
 }
+
 </style>
 <script type="application/javascript">
 class Playlist {
 
-    constructor(playlstJSON){
-        this.id = playlstJSON.id
-        this.name = playlstJSON.name
-        this.description = playlstJSON.description
-        this.name  = playlstJSON.name
-        this.curator = playlstJSON.curator
-        this.email = playlstJSON.email
-        this.location = playlstJSON.location
-        this.genres_string = playlstJSON.genres_string
-        this.followers = playlstJSON.followers
-        this.songs = playlstJSON.songs
-        this.spotify_playlist_page = playlstJSON.spotify_playlist_page
-        this.description = playlstJSON.description
-        this.website = playlstJSON.website
-        this.facebook = playlstJSON.facebook
-        this.twitter = playlstJSON.twitter
-        this.instagram = playlstJSON.instagram
-        this.youtube = playlstJSON.youtube
-        this.reddit = playlstJSON.reddit
-        this.patreon = playlstJSON.patreon
-        this.sound_cloud = playlstJSON.sound_cloud
-        this.submit_hub = playlstJSON.submit_hub
-        this.linked_in = playlstJSON.linked_in
-        this.submission_page = playlstJSON.submission_page
-        Playlist.all.push(this)
-    }
+   constructor(playlstJSON){
+       this.id = playlstJSON.id
+       this.name = playlstJSON.name
+       this.description = playlstJSON.description
+       this.name  = playlstJSON.name
+       this.curator = playlstJSON.curator
+       this.email = playlstJSON.email
+       this.location = playlstJSON.location
+       this.genres_string = playlstJSON.genres_string
+       this.followers = playlstJSON.followers
+       this.songs = playlstJSON.songs
+       this.spotify_playlist_page = playlstJSON.spotify_playlist_page
+       this.description = playlstJSON.description
+       this.website = playlstJSON.website
+       this.facebook = playlstJSON.facebook
+       this.twitter = playlstJSON.twitter
+       this.instagram = playlstJSON.instagram
+       this.youtube = playlstJSON.youtube
+       this.reddit = playlstJSON.reddit
+       this.patreon = playlstJSON.patreon
+       this.sound_cloud = playlstJSON.sound_cloud
+       this.submit_hub = playlstJSON.submit_hub
+       this.linked_in = playlstJSON.linked_in
+       this.submission_page = playlstJSON.submission_page
+       Playlist.all.push(this)
+   }
 
-    renderPlaylist() {
+   renderPlaylist() {
 
-        let playlistBox = `<div onClick="viewplaylist(${this.id})" data-toggle="modal" data-target="#largeModal" class="featured-boxes featured-boxes-style-8 col-md-4">
-            <div class="featured-box featured-box-primary featured-box-text-left">
-                <div class="box-content">
-                    <h4>${this.name.substring(0,29)}...</h4>
-                    <h6>CURATOR: ${this.curator}</h6>
-                    <p style="margin-bottom: 0px;">Genres: ${this.genarateTags()}</p>
-                    <p style="margin-bottom: 0px;"><strong>DESCRIPTION:</strong></p> <p style="margin-bottom: 0px;">${this.description.substring(0,100)}</p>
-                    <p style="margin-bottom: 0px;"><em class="fas fa-user"></em> ${this.followers}&nbsp;<em class="fas fa-music"></em> ${this.songs}</p>
-                    <br>
-                </div>
+       let playlistBox = `
+       <div class="col-md-4">
+        <div style="text-align: left; padding: 10px; margin: 2px;" onClick="viewplaylist(${this.id})" data-toggle="modal" data-target="#largeModal" class="featured-box-text-left featured-box-full ${this.randomBoxColor()}">
+                    <div class="box-content">
+                        <h4 style="margin-bottom: 10px">${this.name.substring(0,29)}...</h4>
+                        <h6>CURATOR: ${this.curator}</h6>
+                        <p style="margin-bottom: 0px;">Genres: ${this.genarateTags()}</p>
+                        <p style="margin-bottom: 0px;"><strong>DESCRIPTION:</strong></p> <p style="margin-bottom: 0px;">${this.description.substring(0,100)}</p>
+                        <p style="margin-bottom: 0px; font-size: 20px;"><em style="margin-bottom: 0px; font-size: 20px;" class="fas fa-user"></em> ${this.followers}&nbsp;<em style="margin-bottom: 0px; font-size: 20px;" class="fas fa-music"></em> ${this.songs}</p>
+                        <br>
+                    </div>
             </div>
         </div>`
 
-        let list = document.getElementById("playlist_list")
-        //let newListItem = document.createElement("li")
-        
-        list.innerHTML += playlistBox 
-        //list.appendChild(newListItem);
-        //debugger
+       let list = document.getElementById("playlist_list")
+       //let newListItem = document.createElement("li")
+       
+       list.innerHTML += playlistBox 
+       //list.appendChild(newListItem);
+       //debugger
+   }
+
+   randomBoxColor(){
+    let color = this.getRandomInt(4)
+    if (color == 0){
+        return "featured-box-full-primary"
+    } else if (color == 1){
+        return "featured-box-full-secondary"
+    } else if (color == 2){
+        return "featured-box-full-tertiary"
+    }else if (color == 3){
+        return "featured-box-full-quaternary"
+    }
+   }
+ 
+
+    getRandomInt(max) {
+        return Math.floor(Math.random() * max);
     }
 
-    renderPlaylistFull() {
-        resetSocialIcons()
-        document.getElementById("largeModalLabel").innerHTML = this.name
-        document.getElementById("curator-location").innerHTML = this.curator
-        document.getElementById("location-location").innerHTML = this.location
-        document.getElementById("genres-location").innerHTML = this.genarateTags()
-        document.getElementById("followers-location").innerHTML = this.followers
-        document.getElementById("songs-location").innerHTML = this.songs
-        document.getElementById("description-location").innerHTML = this.description
+   renderPlaylistFull() {
 
-        let facebookLocation = document.getElementById("facebook-location")
-        this.facebook ? facebookLocation.setAttribute("href", this.facebook) : facebookLocation.remove()
+       //reset
+       resetSocialIcons()
+       resetSiteSubmit()
+       // end reset
+       document.getElementById("largeModalLabel").innerHTML = this.name
+       document.getElementById("curator-location").innerHTML = this.curator
+       document.getElementById("location-location").innerHTML = this.location
+       document.getElementById("genres-location").innerHTML = this.genarateTags("big")
+       document.getElementById("followers-location").innerHTML = this.followers
+       document.getElementById("songs-location").innerHTML = this.songs
+       document.getElementById("description-location").innerHTML = this.description
 
-        let instagramLocation = document.getElementById("instagram-location")
-        this.instagrm ? instagramLocation.setAttribute("href", this.instagram) : instagramLocation.remove()
+       let facebookLocation = document.getElementById("facebook-location")
+       this.facebook ? facebookLocation.setAttribute("href", this.facebook) : facebookLocation.remove()
 
-        let twitterLocation = document.getElementById("twitter-location")
-        this.twitter ? twitterLocation.setAttribute("href", this.twitter) : twitterLocation.remove()
+       let instagramLocation = document.getElementById("instagram-location")
+       this.instagrm ? instagramLocation.setAttribute("href", this.instagram) : instagramLocation.remove()
 
-        let youtubeLocation = document.getElementById("youtube-location")
-        this.youtube ? youtubeLocation.setAttribute("href", this.youtube) : youtubeLocation.remove()
+       let twitterLocation = document.getElementById("twitter-location")
+       this.twitter ? twitterLocation.setAttribute("href", `https://twitter.com/${this.twitter}`) : twitterLocation.remove()
 
-        let soundcloudLocation = document.getElementById("soundcloud-location")
-        this.sound_cloud ? soundcloudLocation.setAttribute("href", this.sound_cloud) : soundcloudLocation.remove()
+       let youtubeLocation = document.getElementById("youtube-location")
+       this.youtube ? youtubeLocation.setAttribute("href", this.youtube) : youtubeLocation.remove()
 
-        let linkedinLocation = document.getElementById("linkedin-location")
-        this.linked_in ? linkedinLocation.setAttribute("href", this.linked_in) : linkedinLocation.remove()
+       let soundcloudLocation = document.getElementById("soundcloud-location")
+       this.sound_cloud ? soundcloudLocation.setAttribute("href", this.sound_cloud) : soundcloudLocation.remove()
 
-        let spotifyLocation = document.getElementById("spotify-location")
-        this.spotify_playlist_page ? spotifyLocation.setAttribute("href", this.spotify_playlist_page) : spotifyLocation.remove()
+       let linkedinLocation = document.getElementById("linkedin-location")
+       this.linked_in ? linkedinLocation.setAttribute("href", this.linked_in) : linkedinLocation.remove()
 
-        let redditLocation = document.getElementById("reddit-location")
-        this.reddit ? redditLocation.setAttribute("href", this.reddit) : redditLocation.remove()
+       let spotifyLocation = document.getElementById("spotify-location")
+       this.spotify_playlist_page ? spotifyLocation.setAttribute("href", this.spotify_playlist_page) : spotifyLocation.remove()
 
-        let patreonLocation = document.getElementById("patreon-location")
-        this.patreon ? patreonLocation.setAttribute("href", this.patreon) : patreonLocation.remove()
-    }
+       let redditLocation = document.getElementById("reddit-location")
+       this.reddit ? redditLocation.setAttribute("href", this.reddit) : redditLocation.remove()
 
-    genarateTags(){
-        let genres = this.genres_string.split(", ")
-        let tags = ""
+       let patreonLocation = document.getElementById("patreon-location")
+       this.patreon ? patreonLocation.setAttribute("href", this.patreon) : patreonLocation.remove()
 
-        genres.forEach(function(item,index){
-            tags += `<span class="badge badge-sm badge-primary">${item}</span>&nbsp;`
-        })
+       let websiteLocation = document.getElementById("website-location")
+       let website = document.getElementById("website")
+       this.website ? websiteLocation.setAttribute("href", this.website) : websiteLocation.remove()
+       this.website ? website.innerHTML = this.website : null
 
-        return tags
-    }
-    
+       let submitHubLocation = document.getElementById("submit_hub-location")
+       let submitHub = document.getElementById("submitHub")
+       this.submit_hub ? submitHubLocation.setAttribute("href", this.submit_hub) : submitHubLocation.remove()
+       this.submit_hub ? submitHub.innerHTML = this.submit_hub : null
+
+       let submissionPageLocation = document.getElementById("submission_page-location")
+       let submissionPage = document.getElementById("submissionPage")
+       this.submission_page ? submissionPageLocation.setAttribute("href", this.submission_page) : submissionPageLocation.remove()
+       this.submission_page ? submissionPage.innerHTML = this.submission_page : null
+   }
+
+   genarateTags(size = "md"){
+        if (size == "md"){
+            let genres = this.genres_string.split(", ")
+            let tags = ""
+
+            genres.forEach(function(item,index){
+            tags += `<span class="badge badge-sm badge-secondary click">${item}</span>&nbsp;`
+            })
+
+            return tags
+        } else if (size == "big"){
+            let genres = this.genres_string.split(", ")
+            let tags = ""
+
+            genres.forEach(function(item,index){
+            tags += `<span class="badge badge-lg badge-secondary click">${item}</span>&nbsp;`
+            })
+
+            return tags
+        }
+       
+   }
+   
 }
 
 Playlist.all = [] 
@@ -130,16 +191,16 @@ Playlist.all = []
 //and of playlist class-----------------------------------------------------------------
 
 class Genre {
-    constructor(genreJSON){
-        this.name = genreJSON.name
-        Genre.all.push(this)
-    }
+   constructor(genreJSON){
+       this.name = genreJSON.name
+       Genre.all.push(this)
+   }
 
-    renderGenre(){
-        let genreBox = `<span class="badge badge-sm badge-primary">${this.name}</span>&nbsp;`
-        let list = document.getElementById("genre-list")
-        list.innerHTML += genreBox
-    }
+   renderGenre(){
+       let genreBox = `<span class="badge badge-sm badge-primary">${this.name}</span>&nbsp;`
+       let list = document.getElementById("genre-list")
+       list.innerHTML += genreBox
+   }
 }
 
 //end of Genre Class---------------------------------------------------------------------
@@ -152,272 +213,308 @@ var pageIncrament = 24
 var current_playlist_range = [0, pageIncrament]
 
 window.onload = function(){
-    let search_button = document.getElementById("search_bar")
+   let search_button = document.getElementById("search_bar")
 
-    search_button.addEventListener('click',function(){ 
-        document.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-              searchGenre()
-            }
-        });
-    })
+   search_button.addEventListener('click',function(){ 
+       document.addEventListener('keypress', function (e) {
+           if (e.key === 'Enter') {
+             searchGenre()
+           }
+       });
+   })
 
-    let nextButton = document.getElementById('next-button')
-    nextButton.addEventListener('click',function(event){ 
-        event.preventDefault()
-        next25Playlists()
-        
-    })
+   let nextButton = document.getElementById('next-button')
+   nextButton.addEventListener('click',function(event){ 
+       event.preventDefault()
+       next25Playlists()
+       
+   })
 
-    let prevButton = document.getElementById('prev-button')
-    prevButton.addEventListener('click',function(event){ 
-        event.preventDefault()
-        prev25Playlists()
-        
-    })
+   let prevButton = document.getElementById('prev-button')
+   prevButton.addEventListener('click',function(event){ 
+       event.preventDefault()
+       prev25Playlists()
+       
+   })
 
-    let nextButton2 = document.getElementById('next-button-2')
-    nextButton2.addEventListener('click',function(event){ 
-        event.preventDefault()
-        next25Playlists()
-        scrollToTop()
-    })
+   let nextButton2 = document.getElementById('next-button-2')
+   nextButton2.addEventListener('click',function(event){ 
+       event.preventDefault()
+       next25Playlists()
+       scrollToTop()
+   })
 
-    let prevButton2 = document.getElementById('prev-button-2')
-    prevButton2.addEventListener('click',function(event){ 
-        event.preventDefault()
-        pref25Playlists()
-        scrollToTop()
-        
-    })
+   let prevButton2 = document.getElementById('prev-button-2')
+   prevButton2.addEventListener('click',function(event){ 
+       event.preventDefault()
+       pref25Playlists()
+       scrollToTop()
+       
+   })
 
-    getPlaylists();
-    getGenre();
+   getPlaylists();
+   getGenre();
 };
 
 function getPlaylists() {
-    fetch(endpoint)
-    .then (function(response) {
-        return response.json()
-    })
-    .then(requests => {
-        //debugger
-        requests.forEach(request => {
-            let newPlaylist = new Playlist(request)
-            //debugger
-        })
-        renderPlaylistSlice(current_playlist_range[0],current_playlist_range[1]);
-    })
+   fetch(endpoint)
+   .then (function(response) {
+       return response.json()
+   })
+   .then(requests => {
+       //debugger
+       requests.forEach(request => {
+           let newPlaylist = new Playlist(request)
+           //debugger
+       })
+       renderPlaylistSlice(current_playlist_range[0],current_playlist_range[1]);
+   })
 };
 
 function updatePageNumber(){
-    let location = document.getElementById("page-number")
-    let location2 = document.getElementById("page-number-2")
-    location.innerHTML = `${page}/${pages}` 
-    location2.innerHTML = `${page}/${pages}`
+   let location = document.getElementById("page-number")
+   let location2 = document.getElementById("page-number-2")
+   location.innerHTML = `${page}/${pages}` 
+   location2.innerHTML = `${page}/${pages}`
 
-    let location3 = document.getElementById("playlist-number")
-    let location4 = document.getElementById("playlist-number-2")
+   let location3 = document.getElementById("playlist-number")
+   let location4 = document.getElementById("playlist-number-2")
 
-    location3.innerHTML = `Viewing ${current_playlist_range[0] + 1}-${current_playlist_range[1]} out of ${Playlist.all.length} playlists</em></p>`
-    location4.innerHTML = `Viewing ${current_playlist_range[0] + 1}-${current_playlist_range[1]} out of ${Playlist.all.length} playlists</em></p>`        
+   location3.innerHTML = `Viewing ${current_playlist_range[0] + 1}-${current_playlist_range[1]} out of ${Playlist.all.length} playlists</em></p>`
+   location4.innerHTML = `Viewing ${current_playlist_range[0] + 1}-${current_playlist_range[1]} out of ${Playlist.all.length} playlists</em></p>`        
 }
 
 function next25Playlists(){
-    if (current_playlist_range[1] >= Playlist.all.length){
+   if (current_playlist_range[1] >= Playlist.all.length){
 
-    } else if (current_playlist_range[1] + pageIncrament <= 0){
-        renderPlaylistSlice(current_playlist_range[0] += pageIncrament, current_playlist_range[1] = Playlist.all.length)
-        page = pages
-        updatePageNumber()
-    } else {
-        renderPlaylistSlice(current_playlist_range[0] += pageIncrament,current_playlist_range[1] += pageIncrament )
-        page += 1
-        updatePageNumber()
-    }
+   } else if (current_playlist_range[1] + pageIncrament <= 0){
+       renderPlaylistSlice(current_playlist_range[0] += pageIncrament, current_playlist_range[1] = Playlist.all.length)
+       page = pages
+       updatePageNumber()
+   } else {
+       renderPlaylistSlice(current_playlist_range[0] += pageIncrament,current_playlist_range[1] += pageIncrament )
+       page += 1
+       updatePageNumber()
+   }
 }
 
 function prev25Playlists(){
-    if (current_playlist_range[0] <= 0){
+   if (current_playlist_range[0] <= 0){
 
-    } else if (current_playlist_range[0] - pageIncrament <= 0){
-        renderPlaylistSlice(current_playlist_range[0] = 0, current_playlist_range[1] = pageIncrament )
-        page = 1
-        updatePageNumber()
-    } else {
-        renderPlaylistSlice(current_playlist_range[0] -= pageIncrament, current_playlist_range[1] -= pageIncrament ) 
-        page -= 1 
-        updatePageNumber()
-    }
+   } else if (current_playlist_range[0] - pageIncrament <= 0){
+       renderPlaylistSlice(current_playlist_range[0] = 0, current_playlist_range[1] = pageIncrament )
+       page = 1
+       updatePageNumber()
+   } else {
+       renderPlaylistSlice(current_playlist_range[0] -= pageIncrament, current_playlist_range[1] -= pageIncrament ) 
+       page -= 1 
+       updatePageNumber()
+   }
 }
 
 function renderPlaylistSlice(arg1,arg2){
-    clearList()
-    Playlist.all.slice(arg1, arg2).forEach( playlist => {
-        playlist.renderPlaylist();
-    })
-    pages = Math.floor(Playlist.all.length/pageIncrament)
-    updatePageNumber()
+   clearList()
+   Playlist.all.slice(arg1, arg2).forEach( playlist => {
+       playlist.renderPlaylist();
+   })
+   pages = Math.floor(Playlist.all.length/pageIncrament)
+   updatePageNumber()
 }
 
 function clearList(){
-    let list = document.getElementById("playlist_list")
-    list.innerHTML = ""
+   let list = document.getElementById("playlist_list")
+   list.innerHTML = ""
 }
 
 function searchGenre(){
-    Playlist.all = []
-    let searchContent = document.getElementById("search_bar").value
+   Playlist.all = []
+   let searchContent = document.getElementById("search_bar").value
 
-    let genreEndPoint = filterEndpoint[0] + searchContent + filterEndpoint[1]
+   let genreEndPoint = filterEndpoint[0] + searchContent + filterEndpoint[1]
 
-    fetch(genreEndPoint)
-    .then (function(response) {
-        return response.json()
-    })
-    .then(requests => {
-        requests.forEach(request => {
-            let newPlaylist = new Playlist(request)
-        })
-        current_playlist_range[0] = 0
-        current_playlist_range[1] = 26
-        
-        renderPlaylistSlice(current_playlist_range[0],current_playlist_range[1]);
-    })
+   fetch(genreEndPoint)
+   .then (function(response) {
+       return response.json()
+   })
+   .then(requests => {
+       requests.forEach(request => {
+           let newPlaylist = new Playlist(request)
+       })
+       current_playlist_range[0] = 0
+       current_playlist_range[1] = 26
+       
+       renderPlaylistSlice(current_playlist_range[0],current_playlist_range[1]);
+   })
 }
 
 function viewplaylist(playlistId){
-    //debugger
-    for (let i = 0; i < Playlist.all.length; i++) {
-        if (Playlist.all[i].id === parseInt(playlistId)) { 
-            Playlist.all[i].renderPlaylistFull()
-            break;
-        }
-    }
+   //debugger
+   for (let i = 0; i < Playlist.all.length; i++) {
+       if (Playlist.all[i].id === parseInt(playlistId)) { 
+           Playlist.all[i].renderPlaylistFull()
+           break;
+       }
+   }
 }
 
 function resetSocialIcons(){
-    let location = document.getElementById("social-list")
-    location.innerHTML = `
-        <a id="facebook-location" target="_blank"><span id="facebook" class="social"><em class="fab fa-facebook"></em>&nbsp;</span></a>        
-        <a id="twitter-location" target="_blank"><span id="twitter" class="social"><em class="fab fa-twitter"></em>&nbsp;</span></a>
-        <a id="instagram-location" target="_blank"><span id="instagrm" class="social"><em class="fab fa-instagram"></em>&nbsp;</span></a>
-        <a id="youtube-location" target="_blank"><span id="youtube" class="social"><em class="fab fa-youtube"></em>&nbsp;</span></a>
-        <a id="soundcloud-location" target="_blank"><span id="soundcloud" class="social"><em class="fab fa-soundcloud"></em>&nbsp;</span></a>
-        <a id="linkedin-location" target="_blank"><span id="linkedin" class="social"><em class="fab fa-linkedin"></em>&nbsp;</span></a>
-        <a id="spotify-location" target="_blank"><span id="spotify" class="social"><em class="fab fa-spotify"></em>&nbsp;</span></a>
-        <a id="reddit-location" target="_blank"><span id="reddit" class="social"><em class="fab fa-reddit"></em>&nbsp;</span></a>
-        <a id="patreon-location" target="_blank"><span id="patreon" class="social"><em class="fab fa-patreon"></em>&nbsp;</span></a>`
+   let location = document.getElementById("social-list")
+   location.innerHTML = `
+    <span><a id="facebook-location" style="color: #1877F2;" target="_blank"><span class="social" id="facebook"><em class="fab fa-facebook"></em>&nbsp;</span></a></span>
+    <span><a id="twitter-location" style="color:#5DA9DD;" target="_blank"><span class="social" id="twitter"><em class="fab fa-twitter"></em>&nbsp;</span></a></span>
+    <span><a id="instagram-location" style="color:#D82667;" target="_blank"><span class="social" id="instagrm"><em class="fab fa-instagram"></em>&nbsp;</span></a></span>
+    <span><a id="youtube-location" style="color:#FF0000;" target="_blank"><span class="social" id="youtube"><em class="fab fa-youtube"></em>&nbsp;</span></a></span>
+    <span><a id="soundcloud-location" style="color:#FF551A;" target="_blank"><span class="social" id="soundcloud"><em class="fab fa-soundcloud"></em>&nbsp;</span></a></span>
+    <span><a id="linkedin-location" style="color:#0A66C2;" target="_blank"><span class="social" id="linkedin"><em class="fab fa-linkedin"></em>&nbsp;</span></a></span>
+    <span><a id="spotify-location" style="color:#1ED760;" target="_blank"><span class="social" id="spotify"><em class="fab fa-spotify"></em>&nbsp;</span></a></span>
+    <span><a id="reddit-location" style="color:#F74300;" target="_blank"><span class="social" id="reddit"><em class="fab fa-reddit"></em>&nbsp;</span></a></span>
+    <span><a id="patreon-location" style="color:blue;" target="_blank"><span class="social" id="patreon"><em class="fab fa-patreon"></em>&nbsp;</span></a></span>
+`}
+
+function resetSiteSubmit(){
+    document.getElementById("site-and-submit").innerHTML = `
+    <p style="margin-bottom: 0; color: #000;"><strong>CURATOR:</strong></p>
+    <p style="margin-bottom: 0;"><em><span id="curator-location"></span></em></p>
+    <p style="margin-bottom: 0;"><em><span id="email-location"></span></em></p>
+    <p style="margin-bottom: 0;"><em><span id="location-location"></span></em></p>
+    <a id="website-location" target="_blank"><p style="margin-bottom: 0;"><em>Website:<span id="website"></span></em></p></a>
+    <a id="submit_hub-location" target="_blank"><p style="margin-bottom: 0;"><em>SubmitHub:<span id="submitHub"></span></em></p></a>
+    <a id="submission_page-location" target="_blank"><p style="margin-bottom: 0;"><em>Submission Page:<span id="SubmissionPage"></span></em></p></a>
+`
 }
 
 function getGenre(){
-    Genre.all = []
+   Genre.all = []
 
-    fetch(genresEndpoint)
-    .then (function(response) {
-        return response.json()
-    })
-    .then(requests => {
-        requests.forEach(request => {
-            let newGenre = new Genre(request)
-        })
-        renderAllGenres()
-    })
+   fetch(genresEndpoint)
+   .then (function(response) {
+       return response.json()
+   })
+   .then(requests => {
+       requests.forEach(request => {
+           let newGenre = new Genre(request)
+       })
+       renderAllGenres()
+   })
 }
 
 function renderAllGenres(){
-    Genre.all.forEach( genre => {
-        genre.renderGenre();
-    })
+   Genre.all.forEach( genre => {
+       genre.renderGenre();
+   })
 }
 
 function scrollToTop(){
-    window.scrollTo(0, 0)
+   window.scrollTo(0, 0)
 } 
 
 </script>
-
-<div id="body">
-    <button class="btn btn-primary" data-toggle="modal" data-target="#largeModal">
-        Launch Large Modal
-    </button>
-    <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+<div id="body"><button class="btn btn-primary" data-target="#largeModal" data-toggle="modal">Launch Large Modal</button>
+    <div aria-hidden="true" aria-labelledby="largeModalLabel" class="modal fade" id="largeModal" role="dialog" tabindex="-1">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+            <div style="background-image: url('https://spotifycurator-list-542349ce.s3.us-east-1.amazonaws.com/photoassets/gradientBG.png'); background-size:100% 100%;" class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="largeModalLabel">Large Modal Title</h4>&nbsp;<p><em class="fas fa-user"></em><span id="followers-location"></span>&nbsp;<em class="fas fa-music"></em><span id="songs-location"></span></p>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h1 class="modal-title heading-secondary"><strong id="largeModalLabel">Large Modal Title</strong></h1>
+                    <button aria-hidden="true" class="close" data-dismiss="modal" type="button">×</button>
                 </div>
-                <div class="modal-body">
-                    <p style="margin-bottom: 0px;"><span id="genres-location"></span></p>
-                    <p style="margin-bottom: 0px;"><strong>DESCRIPTION:</strong></p> <p id="description-location" style="margin-bottom: 0px;"></p>
-                    <h6>CURATOR: <em><span id="curator-location"></span></em></h6>
-                    <p><em><span id="email-location"></span></em></p>
-                    <p><em><span id="location-location"></span></em></p>
-                    <div id="social-list" class="center">
-                        <a style="color:blue;" id="facebook-location" target="_blank"><span id="facebook" class="social"><em class="fab fa-facebook"></em>&nbsp;</span></a>
-                        <a style="color:blue; id="twitter-location" target="_blank"><span id="twitter" class="social"><em class="fab fa-twitter"></em>&nbsp;</span></a>
-                        <a style="color:blue; id="instagram-location" target="_blank"><span id="instagrm" class="social"><em class="fab fa-instagram"></em>&nbsp;</span></a>
-                        <a style="color:blue; id="youtube-location" target="_blank"><span id="youtube" class="social"><em class="fab fa-youtube"></em>&nbsp;</span></a>
-                        <a style="color:blue; id="soundscloud-location" target="_blank"><span id="soundcloud" class="social"><em class="fab fa-soundcloud"></em>&nbsp;</span></a>
-                        <a style="color:blue; id="linkedin-location" target="_blank"><span id="linkedin" class="social"><em class="fab fa-linkedin"></em>&nbsp;</span></a>
-                        <a style="color:blue; id="spotify-location" target="_blank"><span id="spotify" class="social"><em class="fab fa-spotify"></em>&nbsp;</span></a>
-                        <a style="color:blue; id="reddit-location" target="_blank"><span id="reddit" class="social"><em class="fab fa-reddit"></em>&nbsp;</span></a>
-                        <a style="color:blue; id="patreon-location" target="_blank"><span id="patreon" class="social"><em class="fab fa-patreon"></em>&nbsp;</span></a>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6">
+
+
+
+                <div  class="modal-body">
+                    <div style="background-color: #fff;" id="insetBox" class="inset-shadow">
+                       
+
+                        <div style="margin-top: 20px;" class="center" id="site-and-submit">
+                            <p style="margin-bottom: 0; color: #000;"><strong>CURATOR:</strong></p>
+                            <p style="margin-bottom: 0;"><em><span id="curator-location"></span></em></p>
+                            <p style="margin-bottom: 0;"><em><span id="email-location"></span></em></p>
+                            <p style="margin-bottom: 0;"><em><span id="location-location"></span></em></p>
+                            <a id="website-location" target="_blank"><p style="margin-bottom: 0;"><em>Website:<span id="website"></span></em></p></a>
+                            <a id="submit_hub-location" target="_blank"><p style="margin-bottom: 0;"><em>SubmitHub:<span id="submitHub"></span></em></p></a>
+                            <a id="submission_page-location" target="_blank"><p style="margin-bottom: 0;"><em>Submission Page:<span id="SubmissionPage"></span></em></p></a>
                         </div>
-                        <div class="col-md-6">
-                            <p id="website-location"></p>
-                            <p id="submit_hub-location"></p>
-                            <p id="submission_page-location"></p>
+
+                        <div class="divider divider-small divider-small-center">
+                            <hr />
                         </div>
+
+                        <div class="center" id="social-list" style="margin-bottom: 25px;">
+                            <span><a id="facebook-location" style="color: #1877F2;" target="_blank"><span class="social" id="facebook"><em class="fab fa-facebook"></em>&nbsp;</span></a></span>
+                            <span><a id="twitter-location" style="color:#5DA9DD;" target="_blank"><span class="social" id="twitter"><em class="fab fa-twitter"></em>&nbsp;</span></a></span>
+                            <span><a id="instagram-location" style="color:#D82667;" target="_blank"><span class="social" id="instagrm"><em class="fab fa-instagram"></em>&nbsp;</span></a></span>
+                            <span><a id="youtube-location" style="color:#FF0000;" target="_blank"><span class="social" id="youtube"><em class="fab fa-youtube"></em>&nbsp;</span></a></span>
+                            <span><a id="soundcloud-location" style="color:#FF551A;" target="_blank"><span class="social" id="soundcloud"><em class="fab fa-soundcloud"></em>&nbsp;</span></a></span>
+                            <span><a id="linkedin-location" style="color:#0A66C2;" target="_blank"><span class="social" id="linkedin"><em class="fab fa-linkedin"></em>&nbsp;</span></a></span>
+                            <span><a id="spotify-location" style="color:#1ED760;" target="_blank"><span class="social" id="spotify"><em class="fab fa-spotify"></em>&nbsp;</span></a></span>
+                            <span><a id="reddit-location" style="color:#F74300;" target="_blank"><span class="social" id="reddit"><em class="fab fa-reddit"></em>&nbsp;</span></a></span>
+                            <span><a id="patreon-location" style="color:blue;" target="_blank"><span class="social" id="patreon"><em class="fab fa-patreon"></em>&nbsp;</span></a></span>
+                        </div>
+                        
+                        <hr />
+
+                        <h2 style="margin-bottom: 0px; color: #000;">DESCRIPTION:<h2>
+                        <p id="description-location" class="lead"> </p>
+                        <p><span id="genres-location"></span></p>
+                        <p style="font-size: 30px;"><em class="fas fa-user"></em>&nbsp;<span id="followers-location"></span>&nbsp;<em class="fas fa-music"></em>&nbsp;<span id="songs-location"></span></p>
+    
                     </div>
-                    
-                    <br>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                
+
+                <div class="modal-footer"><button class="btn btn-default" data-dismiss="modal" type="button">Close</button></div>
+            </div>
+    </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-11">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="tabs">
+
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item active"><a class="nav-link" data-toggle="tab" href="#popular"><strong>Filter</strong></a></li>
+                        </ul>
+                    
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="popular">
+                                <div>SEARCH:<input id="search_bar" name="search_bar" type="text" /></div>
+                                
+                                <div>VIEW ALL</div>
+                                
+                                <div id="genre-list"> </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            
+                <div class="col-md-10">
+                    <div id="playlist-box">
+                        <div id="top-nav">
+                            <div class="center">
+                                <p><em id="playlist-number">Viewing 0-0 out of 0 playlists</em></p>
+                                <a class="btn btn-3d btn-primary mr-xs mb-sm" id="prev-button">&lt;</a> <strong><span id="page-number" style="color: #000;">1/0</span></strong> <a class="btn btn-3d btn-primary mr-xs mb-sm" id="next-button">&gt;</a>
+                            </div>
+                        </div>
+                    
+                        <div class="row featured-boxes-full" id="playlist_list">
+
+                        </div>
+                        
+                        <div id="bottom-nav">
+                            <div class="center">
+                                <a class="btn btn-3d btn-primary mr-xs mb-sm" id="prev-button-2">&lt;</a>
+                                <strong><span id="page-number-2" style="color: #000;">1/0</span></strong> 
+                                <a class="btn btn-3d btn-primary mr-xs mb-sm" id="next-button-2">&gt;</a>
+                                <p><em id="playlist-number-2">Viewing 0-0 out of 0 playlists</em></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-<div class="row">
-<div class="col-md-1"> </div>
-
-<div class="col-md-2">
-<div id="side-bar">
-<h3><strong>Filter</strong></h3>
-
-<div>SEARCH:<input id="search_bar" name="search_bar" type="text" /></div>
-
-<div>VIEW ALL</div>
-
-<div id="genre-list"> </div>
 </div>
-</div>
-
-<div class="col-md-8">
-<div id="playlist-box">
-<div id="top-nav">
-<div class="center">
-    <p><em id="playlist-number">Viewing 0-0 out of 0 playlists</em></p>
-    <a class="btn btn-3d btn-primary mr-xs mb-sm" id="prev-button">&lt;</a> <strong><span id="page-number" style="color: #000;">1/0</span></strong> <a class="btn btn-3d btn-primary mr-xs mb-sm" id="next-button">&gt;</a></div>
-</div>
-
-<div class="row" id="playlist_list" style="overflow: hidden;"><em class="fas fa-sync-alt"></em></div>
-
-<div id="bottom-nav">
-<div class="center"><a class="btn btn-3d btn-primary mr-xs mb-sm" id="prev-button-2">&lt;</a> <strong><span id="page-number-2" style="color: #000;">1/0</span></strong> <a class="btn btn-3d btn-primary mr-xs mb-sm" id="next-button-2">&gt;</a>
-
-<p><em id="playlist-number-2">Viewing 0-0 out of 0 playlists</em></p>
-</div>
-</div>
-</div>
-</div>
-
-<div class="col-md-1"> </div>
-</div>
-</div>
+ 
