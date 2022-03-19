@@ -1,7 +1,7 @@
-const endpoint = "https://spotify-curator-list.herokuapp.com/playlist"
-const filterEndpoint = ["https://spotify-curator-list.herokuapp.com/genre/", "/playlists"]
+const endpoint = "http://localhost:3000/playlist";
+const filterEndpoint = ["http://localhost:3000/genre/", "/playlists"];
 
-let home = `<div id="playlist_list"></div>`
+let home = `<div id="playlist_list"></div>`;
 
 let create = `
 <div id="form-errors"></div>
@@ -63,196 +63,215 @@ let create = `
 
 
 <input id="form-submit" type="submit" value="Submit">
-</form> `
+</form> `;
 
+var current_playlist_range = [0, 26];
 
-var current_playlist_range = [0,26]
+window.onload = function () {
+  let search_button = document.getElementById("search_bar");
 
-window.onload = function(){
-    let search_button = document.getElementById("search_bar")
+  search_button.addEventListener("click", function () {
+    document.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        searchGenre();
+      }
+    });
+  });
 
-    search_button.addEventListener('click',function(){ 
-        document.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-              searchGenre()
-            }
-        });
-    })
+  let divSubmit = document.getElementById("user-comments-submit");
+  divSubmit.addEventListener("click", function (event) {
+    event.preventDefault();
+    displayContentDiv();
+  });
 
-    let homeButton = document.getElementById('home-button')
-    homeButton.addEventListener('click',function(event){
-        event.preventDefault()
-        renderPage(home)
-        getPlaylists();
-    })
-
-    let createButton = document.getElementById('create-button')
-    createButton.addEventListener('click',function(event){ 
-        event.preventDefault()
-        renderPage(create)
-        formPage();
-        addSubmitEvent()
-    })
-
+  let homeButton = document.getElementById("home-button");
+  homeButton.addEventListener("click", function (event) {
+    event.preventDefault();
+    renderPage(home);
     getPlaylists();
+  });
+
+  let createButton = document.getElementById("create-button");
+  createButton.addEventListener("click", function (event) {
+    event.preventDefault();
+    renderPage(create);
+    formPage();
+    addSubmitEvent();
+  });
+
+  getPlaylists();
 };
 
-function addSubmitEvent(){
-    let submitButton = document.getElementById("form-submit")
-    submitButton
+function addSubmitEvent() {
+  let submitButton = document.getElementById("form-submit");
+  submitButton;
 
-    submitButton.addEventListener('click', function(event){
-        event.preventDefault()
-        createNewPlaylist()
-    })
+  submitButton.addEventListener("click", function (event) {
+    event.preventDefault();
+    createNewPlaylist();
+  });
 }
 
 function getPlaylists() {
-    fetch(endpoint)
-    .then (function(response) {
-        return response.json()
+  fetch(endpoint)
+    .then(function (response) {
+      return response.json();
     })
-    .then(requests => {
+    .then((requests) => {
+      //debugger
+      requests.forEach((request) => {
+        let newPlaylist = new Playlist(request);
         //debugger
-        requests.forEach(request => {
-            let newPlaylist = new Playlist(request)
-            //debugger
-        })
-        renderPlaylistSlice(current_playlist_range[0],current_playlist_range[1]);
+      });
+      renderPlaylistSlice(current_playlist_range[0], current_playlist_range[1]);
+    });
+}
+
+function next25Playlists(arg1, arg2) {
+  if (current_playlist_range[1] >= Playlist.all.length) {
+  } else if (current_playlist_range[1] + 25 <= 0) {
+    renderPlaylistSlice(
+      (current_playlist_range[0] += 25),
+      (current_playlist_range[1] = Playlist.all.length)
+    );
+  } else {
+    renderPlaylistSlice(
+      (current_playlist_range[0] += 25),
+      (current_playlist_range[1] += 25)
+    );
+  }
+}
+
+function prev25Playlists() {
+  if (current_playlist_range[0] <= 0) {
+  } else if (current_playlist_range[0] - 25 <= 0) {
+    renderPlaylistSlice(
+      (current_playlist_range[0] = 0),
+      (current_playlist_range[1] = 26)
+    );
+  } else {
+    renderPlaylistSlice(
+      (current_playlist_range[0] -= 25),
+      (current_playlist_range[1] -= 25)
+    );
+  }
+}
+
+function renderPlaylistSlice(arg1, arg2) {
+  clearList();
+  Playlist.all.slice(arg1, arg2).forEach((playlist) => {
+    playlist.renderPlaylist();
+  });
+}
+
+function clearList() {
+  let list = document.getElementById("playlist_list");
+  list.innerHTML = "";
+}
+
+function searchGenre() {
+  Playlist.all = [];
+  let searchContent = document.getElementById("search_bar").value;
+
+  let genreEndPoint = filterEndpoint[0] + searchContent + filterEndpoint[1];
+
+  fetch(genreEndPoint)
+    .then(function (response) {
+      return response.json();
     })
-};
+    .then((requests) => {
+      requests.forEach((request) => {
+        let newPlaylist = new Playlist(request);
+      });
+      current_playlist_range[0] = 0;
+      current_playlist_range[1] = 26;
 
-function next25Playlists(arg1,arg2){
-    if (current_playlist_range[1] >= Playlist.all.length){
-
-    } else if (current_playlist_range[1] + 25 <= 0){
-        renderPlaylistSlice(current_playlist_range[0] += 25, current_playlist_range[1] = Playlist.all.length)
-    } else {
-        renderPlaylistSlice(current_playlist_range[0] += 25,current_playlist_range[1] += 25 )
-    }
+      renderPlaylistSlice(current_playlist_range[0], current_playlist_range[1]);
+    });
 }
 
-function prev25Playlists(){
-    if (current_playlist_range[0] <= 0){
-
-    } else if (current_playlist_range[0] - 25 <= 0){
-        renderPlaylistSlice(current_playlist_range[0] = 0, current_playlist_range[1] = 26 )
-    } else {
-        renderPlaylistSlice(current_playlist_range[0] -= 25, current_playlist_range[1] -= 25 ) 
-    }
+function scrollToTop() {
+  window.scrollTo(0, 0);
 }
 
-function renderPlaylistSlice(arg1,arg2){
-    clearList()
-    Playlist.all.slice(arg1, arg2).forEach( playlist => {
-        playlist.renderPlaylist();
-    })
+function highlighter(string, search) {
+  if (string.includes(search)) {
+    array = string.split(", ");
+    elementI = array.findIndex(search);
+    array[elementI] = `<em>` + array[elementI] + `</em>`;
+    newString = array.join(", ");
+    return newString;
+  }
 }
 
-function clearList(){
-    let list = document.getElementById("playlist_list")
-    list.innerHTML = ""
+function renderPage(page) {
+  body = document.getElementById("body");
+  body.innerHTML = page;
 }
 
-function searchGenre(){
-    Playlist.all = []
-    let searchContent = document.getElementById("search_bar").value
+function homePage() {
+  let search_button = document.getElementById("search_bar");
 
-    let genreEndPoint = filterEndpoint[0] + searchContent + filterEndpoint[1]
-
-    fetch(genreEndPoint)
-    .then (function(response) {
-        return response.json()
-    })
-    .then(requests => {
-        requests.forEach(request => {
-            let newPlaylist = new Playlist(request)
-        })
-        current_playlist_range[0] = 0
-        current_playlist_range[1] = 26
-        
-        renderPlaylistSlice(current_playlist_range[0],current_playlist_range[1]);
-    })
+  search_button.addEventListener("click", function () {
+    document.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        searchGenre();
+      }
+    });
+  });
+  getPlaylists();
 }
 
-function scrollToTop(){
-    window.scrollTo(0, 0)
+function formPage() {
+  let submitButton = document.getElementById("form-submit");
+
+  submitButton.addEventListener("click", function (event) {
+    event.preventDefault();
+    createNewPlaylist();
+  });
 }
 
-function highlighter(string, search){
-    if (string.includes(search)){
-        array = string.split(", ")
-        elementI = array.findIndex(search)
-        array[elementI] = `<em>` + array[elementI] + `</em>`
-        newString = array.join(", ")
-        return newString
-    }
+function createNewPlaylist() {
+  //validation
+  let requireFields = ["playlist-name", "curator", "genres", "description"];
+
+  if (
+    requireFields.every(
+      (name) => document.getElementById(name).value.trim() != ""
+    )
+  ) {
+    let playlistObject = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        name: document.getElementById("playlist-name").value,
+        curator: document.getElementById("curator").value,
+        email: document.getElementById("email").value,
+        location: document.getElementById("location").value,
+        genres_string: document.getElementById("genres").value,
+        description: document.getElementById("description").value,
+        playlist_page: document.getElementById("playlist-link").value,
+        website: document.getElementById("website").value,
+        facebook: document.getElementById("facebook").value,
+        twitter: document.getElementById("twitter").value,
+        instagram: document.getElementById("instagram").value,
+        youtube: document.getElementById("youtube").value,
+        reddit: document.getElementById("reddit").value,
+        patreon: document.getElementById("patreon").value,
+        sound_cloud: document.getElementById("sound_cloud").value,
+        submit_hub: document.getElementById("submit_hub").value,
+        linked_in: document.getElementById("linked_in").value,
+        submission_page: document.getElementById("submission_page").value,
+      }),
+    };
+    fetch("http://localhost:3000/playlist/new", playlistObject);
+  } else {
+    document.getElementById(
+      "form-errors"
+    ).innerHTML = `<h6>Please fill out minimum required info</h6><p>${requireFields}</p>`;
+    scrollToTop();
+  }
 }
-
-function renderPage(page){
-    body = document.getElementById('body')
-    body.innerHTML = page
-}
-
-function homePage(){
-    let search_button = document.getElementById("search_bar")
-
-    search_button.addEventListener('click',function(){ 
-        document.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-              searchGenre()
-            }
-        });
-    })
-    getPlaylists();
-}
-
-function formPage(){
-    let submitButton = document.getElementById("form-submit")
-
-    submitButton.addEventListener('click', function(event){
-        event.preventDefault()
-        createNewPlaylist()
-    })
-}
-
-function createNewPlaylist(){
-
-    //validation
-    let requireFields = ['playlist-name', "curator", "genres", "description"]
-
-    if (requireFields.every((name) => document.getElementById(name).value.trim() != "")){
-        let playlistObject = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify({
-                name: document.getElementById("playlist-name").value,
-                curator: document.getElementById("curator").value,
-                email: document.getElementById("email").value,
-                location: document.getElementById("location").value,
-                genres_string: document.getElementById("genres").value,
-                description: document.getElementById("description").value,
-                playlist_page: document.getElementById("playlist-link").value,
-                website: document.getElementById("website").value,
-                facebook: document.getElementById("facebook").value,
-                twitter: document.getElementById("twitter").value,
-                instagram: document.getElementById("instagram").value,
-                youtube: document.getElementById("youtube").value,
-                reddit: document.getElementById("reddit").value,
-                patreon: document.getElementById("patreon").value,
-                sound_cloud: document.getElementById("sound_cloud").value,
-                submit_hub: document.getElementById("submit_hub").value,
-                linked_in: document.getElementById("linked_in").value,
-                submission_page: document.getElementById("submission_page").value,    
-            })
-        };
-        fetch( "https://spotify-curator-list.herokuapp.com/playlist/new", playlistObject);
-    } else{
-        document.getElementById("form-errors").innerHTML = `<h6>Please fill out minimum required info</h6><p>${requireFields}</p>`
-        scrollToTop()
-    }
-}
-

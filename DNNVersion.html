@@ -25,6 +25,7 @@
     border-style: solid;
     border-width: 1px;
     border-color:gainsboro;
+    padding: 20px;
 }
 
 .social{
@@ -213,13 +214,20 @@ var pageIncrament = 24
 var current_playlist_range = [0, pageIncrament]
 
 window.onload = function(){
-   let search_button = document.getElementById("search_bar")
 
-   search_button.addEventListener('click',function(){ 
+   let search_button = document.getElementById("search-button")
+   search_button.addEventListener('click',function(e){ 
+        e.preventDefault()
+        searchGenre()
+   })
+
+   let search_bar = document.getElementById("search_bar")
+   search_bar.addEventListener('click',function(){ 
        document.addEventListener('keypress', function (e) {
-           if (e.key === 'Enter') {
-             searchGenre()
-           }
+            if (e.key === 'Enter') {
+                e.preventDefault()
+                searchGenre()
+            }
        });
    })
 
@@ -330,7 +338,7 @@ function searchGenre(){
    Playlist.all = []
    let searchContent = document.getElementById("search_bar").value
 
-   let genreEndPoint = filterEndpoint[0] + searchContent + filterEndpoint[1]
+   let genreEndPoint = "https://spotify-curator-list.herokuapp.com/genre/" + searchContent + "/playlists"
 
    fetch(genreEndPoint)
    .then (function(response) {
@@ -409,7 +417,7 @@ function scrollToTop(){
 } 
 
 </script>
-<div id="body"><button class="btn btn-primary" data-target="#largeModal" data-toggle="modal">Launch Large Modal</button>
+<div id="body">
     <div aria-hidden="true" aria-labelledby="largeModalLabel" class="modal fade" id="largeModal" role="dialog" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div style="background-image: url('https://spotifycurator-list-542349ce.s3.us-east-1.amazonaws.com/photoassets/gradientBG.png'); background-size:100% 100%;" class="modal-content">
@@ -479,9 +487,11 @@ function scrollToTop(){
                     
                         <div class="tab-content">
                             <div class="tab-pane active" id="popular">
-                                <div>SEARCH:<input id="search_bar" name="search_bar" type="text" /></div>
+                                <div class="row" style="display: table;">
+                                    <div class="col-12"><input style="display:table-cell; width:100%" placeholder="search" id="search_bar" name="search_bar" type="text" /><button id="search-button"><em class="icon-magnifier icons"></em></button></div>
+                                </div>
                                 
-                                <div>VIEW ALL</div>
+                                <div class="click" onClick="clearList();getPlaylists();">VIEW ALL</div>
                                 
                                 <div id="genre-list"> </div>
                             </div>

@@ -1,0 +1,110 @@
+<div id="body"><button class="btn btn-primary" data-target="#largeModal" data-toggle="modal">Launch Large Modal</button>
+    <div aria-hidden="true" aria-labelledby="largeModalLabel" class="modal fade" id="largeModal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div style="background-image: url('https://spotifycurator-list-542349ce.s3.us-east-1.amazonaws.com/photoassets/gradientBG.png'); background-size:100% 100%;" class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title heading-secondary"><strong id="largeModalLabel">Large Modal Title</strong></h1>
+                    <button aria-hidden="true" class="close" data-dismiss="modal" type="button">×</button>
+                </div>
+
+
+
+                <div  class="modal-body">
+                    <div style="background-color: #fff;" id="insetBox" class="inset-shadow">
+                       
+
+                        <div style="margin-top: 20px;" class="center" id="site-and-submit">
+                            <p style="margin-bottom: 0; color: #000;"><strong>CURATOR:</strong></p>
+                            <p style="margin-bottom: 0;"><em><span id="curator-location"></span></em></p>
+                            <p style="margin-bottom: 0;"><em><span id="email-location"></span></em></p>
+                            <p style="margin-bottom: 0;"><em><span id="location-location"></span></em></p>
+                            <a id="website-location" target="_blank"><p style="margin-bottom: 0;"><em>Website:<span id="website"></span></em></p></a>
+                            <a id="submit_hub-location" target="_blank"><p style="margin-bottom: 0;"><em>SubmitHub:<span id="submitHub"></span></em></p></a>
+                            <a id="submission_page-location" target="_blank"><p style="margin-bottom: 0;"><em>Submission Page:<span id="SubmissionPage"></span></em></p></a>
+                        </div>
+
+                        <div class="divider divider-small divider-small-center">
+                            <hr />
+                        </div>
+
+                        <div class="center" id="social-list" style="margin-bottom: 25px;">
+                            <span><a id="facebook-location" style="color: #1877F2;" target="_blank"><span class="social" id="facebook"><em class="fab fa-facebook"></em>&nbsp;</span></a></span>
+                            <span><a id="twitter-location" style="color:#5DA9DD;" target="_blank"><span class="social" id="twitter"><em class="fab fa-twitter"></em>&nbsp;</span></a></span>
+                            <span><a id="instagram-location" style="color:#D82667;" target="_blank"><span class="social" id="instagrm"><em class="fab fa-instagram"></em>&nbsp;</span></a></span>
+                            <span><a id="youtube-location" style="color:#FF0000;" target="_blank"><span class="social" id="youtube"><em class="fab fa-youtube"></em>&nbsp;</span></a></span>
+                            <span><a id="soundcloud-location" style="color:#FF551A;" target="_blank"><span class="social" id="soundcloud"><em class="fab fa-soundcloud"></em>&nbsp;</span></a></span>
+                            <span><a id="linkedin-location" style="color:#0A66C2;" target="_blank"><span class="social" id="linkedin"><em class="fab fa-linkedin"></em>&nbsp;</span></a></span>
+                            <span><a id="spotify-location" style="color:#1ED760;" target="_blank"><span class="social" id="spotify"><em class="fab fa-spotify"></em>&nbsp;</span></a></span>
+                            <span><a id="reddit-location" style="color:#F74300;" target="_blank"><span class="social" id="reddit"><em class="fab fa-reddit"></em>&nbsp;</span></a></span>
+                            <span><a id="patreon-location" style="color:blue;" target="_blank"><span class="social" id="patreon"><em class="fab fa-patreon"></em>&nbsp;</span></a></span>
+                        </div>
+                        
+                        <hr />
+
+                        <h2 style="margin-bottom: 0px; color: #000;">DESCRIPTION:<h2>
+                        <p id="description-location" class="lead"> </p>
+                        <p><span id="genres-location"></span></p>
+                        <p style="font-size: 30px;"><em class="fas fa-user"></em>&nbsp;<span id="followers-location"></span>&nbsp;<em class="fas fa-music"></em>&nbsp;<span id="songs-location"></span></p>
+    
+                    </div>
+                </div>
+
+                
+
+                <div class="modal-footer"><button class="btn btn-default" data-dismiss="modal" type="button">Close</button></div>
+            </div>
+    </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-11">
+        <div class="row">
+        <div class="col-md-2">
+        <div class="tabs">
+        <ul class="nav nav-tabs">
+            <li class="nav-item active"><a class="nav-link" data-toggle="tab" href="#popular"><em class="fas fa-star"></em> Popular</a></li>
+        </ul>
+        
+        <div class="tab-content">
+        <div class="tab-pane active" id="popular">
+        <h3><strong>Filter</strong></h3>
+        
+        <div>SEARCH:<input id="search_bar" name="search_bar" type="text" /></div>
+        
+        <div>VIEW ALL</div>
+        
+        <div id="genre-list"> </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        
+        <div class="col-md-10"> 
+    
+        <div id="playlist-box">
+            <div id="top-nav">
+                <div class="center">
+                    <p><em id="playlist-number">Viewing 0-0 out of 0 playlists</em></p>
+                    <a class="btn btn-3d btn-primary mr-xs mb-sm" id="prev-button">&lt;</a> <strong><span id="page-number" style="color: #000;">1/0</span></strong> <a class="btn btn-3d btn-primary mr-xs mb-sm" id="next-button">&gt;</a>
+                </div>
+            </div>
+        
+            <div class="row featured-boxes-full" id="playlist_list">
+
+            </div>
+            
+            <div id="bottom-nav">
+                <div class="center">
+                    <a class="btn btn-3d btn-primary mr-xs mb-sm" id="prev-button-2">&lt;</a>
+                    <strong><span id="page-number-2" style="color: #000;">1/0</span></strong> 
+                    <a class="btn btn-3d btn-primary mr-xs mb-sm" id="next-button-2">&gt;</a>
+                    <p><em id="playlist-number-2">Viewing 0-0 out of 0 playlists</em></p>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        
+</div>
